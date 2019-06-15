@@ -5,13 +5,13 @@
         android:layout_height="wrap_content">
 
     <LinearLayout
+            android:id="@+id/id_pad"
             android:layout_width="match_parent"
-            android:layout_height="120dp"
-            android:background="@color/colorPrimaryDark">
+            android:layout_height="120dp">
         <TextView
-                android:id="@+id/id_pad"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:background="@color/colorAccent"
                 android:text="A"
         />
     </LinearLayout>

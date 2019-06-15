@@ -10,8 +10,16 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        handleDataListPad()
+
         startDefaultFragment()
     }
+
+    fun handleDataListPad(){
+
+    }
+
+
 
     private fun startDefaultFragment() {
 
@@ -19,4 +27,26 @@ class MainActivity : AppCompatActivity() {
 
         supportFragmentManager.beginTransaction().replace(R.id.frameContent, fragment).commit()
     }
+
+    override fun onCreateOptionsMenu(menu: android.view.Menu?): kotlin.Boolean {
+        val inflater = menuInflater
+
+        inflater.inflate(R.menu.menu_toolbar, menu)
+
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: android.view.MenuItem): kotlin.Boolean {
+        when (item.itemId){
+            R.id.menu_page ->{
+                val fragment: Fragment = PadListFragment.newInstance()
+
+                supportFragmentManager.beginTransaction().replace(R.id.frameContent, fragment).commit()
+                return true
+            }
+
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
 }

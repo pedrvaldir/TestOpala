@@ -1,4 +1,3 @@
 package com.example.testopala
 
-class PadEntity {
-}
+data class PadEntity(val color: Int, val pad: Int, val state: Int, val time: Double)
