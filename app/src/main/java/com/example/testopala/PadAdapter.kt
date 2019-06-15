@@ -1,5 +1,6 @@
 package com.example.testopala
 
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +15,7 @@ class PadAdapter(val padList: List<String>) : BaseAdapter() {
         val context = parent?.context
         val inflater = LayoutInflater.from(context)
         val view = inflater.inflate(R.layout.pad_entry, parent, false)
+
         view.id_pad.text = pad!!
 
         return view
