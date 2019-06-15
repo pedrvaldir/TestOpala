@@ -15,7 +15,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun startDefaultFragment() {
 
-        val fragment : Fragment = PadListFragment.newInstance()
+        val fragment: Fragment = PadListFragment.newInstance()
 
         supportFragmentManager.beginTransaction().replace(R.id.frameContent, fragment).commit()
     }

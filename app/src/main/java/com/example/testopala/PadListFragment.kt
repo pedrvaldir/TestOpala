@@ -14,7 +14,7 @@ class PadListFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (arguments !=null){
+        if (arguments != null) {
 
         }
     }
@@ -25,13 +25,20 @@ class PadListFragment : Fragment() {
         //localiza o layout
         mGridViewList = rootView.findViewById(R.id.gridViewList)
 
-        //insertData Gridview
+        //insertData Gridview mock
+        var adapter: PadAdapter? = null
+
+        var listPads = listOf("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12")
+
+        adapter = PadAdapter(listPads)
+
+        mGridViewList.adapter = adapter
 
         return rootView
     }
 
     companion object {
-        fun newInstance(): PadListFragment{
+        fun newInstance(): PadListFragment {
             val args: Bundle = Bundle()
 
             val fragment = PadListFragment()

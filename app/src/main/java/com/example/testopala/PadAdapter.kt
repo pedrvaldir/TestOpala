@@ -8,7 +8,7 @@ import kotlinx.android.synthetic.main.pad_entry.view.*
 
 class PadAdapter(val padList: List<String>) : BaseAdapter() {
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        
+
         val pad = this.padList[position]
 
         val context = parent?.context
