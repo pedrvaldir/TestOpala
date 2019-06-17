@@ -53,21 +53,30 @@ class PadAdapter(val padList: List<PadEntity>, val heightGridView: Int) : BaseAd
     }
 
     private fun customSelectorImageView(ivPad: ImageView, pad: PadEntity) {
-     /*   val layerDrawable =  ContextCompat.getDrawable(mContext!!, R.drawable.bg_pad_selected) as (LayerDrawable)
+
+       var colorPadSelector: Int = R.color.pad_green
+
+        when(pad.color){
+            "pink" -> colorPadSelector = R.color.pad_pink
+            "blue" -> colorPadSelector = R.color.pad_blue
+            "green" -> colorPadSelector = R.color.pad_green
+        }
+
+      val layerDrawable =  ContextCompat.getDrawable(mContext!!, R.drawable.bg_pad_selected) as (LayerDrawable)
         val selectedCustom = layerDrawable.findDrawableByLayerId(R.id.layerItem)
-        (selectedCustom as GradientDrawable).setColor(getColorWithAlpha(ContextCompat.getColor(mContext!!, pad.color), 0.5F))
+        (selectedCustom as GradientDrawable).setColor(getColorWithAlpha(ContextCompat.getColor(mContext!!, colorPadSelector), 0.5F))
 
 
         val layerDrawable2 =  ContextCompat.getDrawable(mContext!!, R.drawable.bg_pad_selected) as (LayerDrawable)
         val selectedCustom2 = layerDrawable2.findDrawableByLayerId(R.id.layerItem2)
-        (selectedCustom2 as GradientDrawable).setColor(getColorWithAlpha(ContextCompat.getColor(mContext!!, pad.color), 0.2F))
+        (selectedCustom2 as GradientDrawable).setColor(getColorWithAlpha(ContextCompat.getColor(mContext!!, colorPadSelector), 0.2F))
 
         val stateListDrawable = StateListDrawable()
         stateListDrawable.addState(intArrayOf(android.R.attr.state_selected), layerDrawable)
         stateListDrawable.addState(intArrayOf(-android.R.attr.state_selected),
             ContextCompat.getDrawable(mContext!!, R.drawable.bg_pad))
 
-        ViewCompat.setBackground(ivPad, stateListDrawable)*/
+        ViewCompat.setBackground(ivPad, stateListDrawable)
     }
 
     private fun getColorWithAlpha(color: Int, ratio: Float): Int {

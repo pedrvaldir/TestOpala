@@ -11,13 +11,16 @@ import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var listPads: List<PadEntity>
+    private lateinit var colorsList: Array<String?>
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         handleDataListPad()
 
-        startDefaultFragment()
     }
 
     private fun handleDataListPad() {
@@ -46,14 +49,32 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun configureList(padList: List<PadEntity>) {
-        var listPads = padList
+
+        listPads = padList
+        colorsList = Array<String?>(24) { null }
+
+        for (listPads in listPads) {
+
+            val lisTime = listOf(listPads.time)
+
+            if (listPads.pad != 100 && listPads.pad != 101) {
+
+                colorsList[listPads.pad-1] = listPads.color
+
+                Log.d("Executa:", "--" + listPads.pad.toString() + "stringlist" + colorsList.get(listPads.pad-1) + "<cor")
+            }
+        }
+
+        val fragment: Fragment = PadListFragment.newInstance(colorsList)
+
+        supportFragmentManager.beginTransaction().replace(R.id.frameContent, fragment).commit()
 
     }
 
 
     private fun startDefaultFragment() {
 
-        val fragment: Fragment = PadListFragment.newInstance()
+        val fragment: Fragment = PadListFragment.newInstance(colorsList)
 
         supportFragmentManager.beginTransaction().replace(R.id.frameContent, fragment).commit()
     }
@@ -69,11 +90,12 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: android.view.MenuItem): kotlin.Boolean {
         when (item.itemId) {
             R.id.menu_page -> {
-                val fragment: Fragment = PadListFragment.newInstance()
+                val fragment: Fragment = PadListFragment.newInstance(colorsList)
 
                 supportFragmentManager.beginTransaction().replace(R.id.frameContent, fragment).commit()
                 return true
             }
+
 
         }
         return super.onOptionsItemSelected(item)

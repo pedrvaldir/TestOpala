@@ -15,11 +15,13 @@ import android.widget.GridView
 class PadListFragment : Fragment() {
 
     private lateinit var mGridViewList: GridView
+    private var mPadsFilter: Array<String>? = null
+    private var adapter: PadAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (arguments != null) {
-
+            mPadsFilter = arguments!!.getStringArray("Side")
         }
     }
 
@@ -30,28 +32,25 @@ class PadListFragment : Fragment() {
         mGridViewList = rootView.findViewById(R.id.gridViewList)
 
         //insertData Gridview mock
-        var adapter: PadAdapter? = null
 
-        /*  val data = listOf(
-            PadEntity(R.color.pad_pink, 100, 1, 6.183232125011273),
-            PadEntity(R.color.pad_blue, 100, 1, 6.183232125011273),
-            PadEntity(R.color.pad_blue, 100, 1, 6.183232125011273),
-            PadEntity(R.color.pad_green, 100, 1, 6.183232125011273),
-            PadEntity(R.color.pad_pink, 100, 1, 6.183232125011273),
-            PadEntity(R.color.pad_pink, 100, 1, 6.183232125011273),
-            PadEntity(R.color.pad_pink, 100, 1, 6.183232125011273),
-            PadEntity(R.color.pad_blue, 100, 1, 6.183232125011273),
-            PadEntity(R.color.pad_blue, 100, 1, 6.183232125011273),
-            PadEntity(R.color.pad_green, 100, 1, 6.183232125011273),
-            PadEntity(R.color.pad_pink, 100, 1, 6.183232125011273),
-            PadEntity(R.color.pad_pink, 100, 1, 6.183232125011273)
-        )
 
-        adapter = PadAdapter(data, getHeightScreen())*/
+        loadColorPads()
 
         mGridViewList.adapter = adapter
 
         return rootView
+    }
+
+    private fun loadColorPads() {
+
+        val listdfas = mPadsFilter
+
+        val data = arrayListOf<PadEntity>()
+
+        for (item in 0..11) {
+            data.add(PadEntity(listdfas!![item], item, 1, 0.0))
+        }
+        adapter = PadAdapter(data!!, getHeightScreen())
     }
 
     private fun getHeightScreen(): Int {
@@ -92,8 +91,10 @@ class PadListFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance(): PadListFragment {
+        @JvmStatic
+        fun newInstance(colorsList: Array<String?>): PadListFragment {
             val args: Bundle = Bundle()
+            args.putStringArray("Side", colorsList)
 
             val fragment = PadListFragment()
             fragment.arguments = args
