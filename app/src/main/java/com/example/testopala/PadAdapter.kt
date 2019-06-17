@@ -1,16 +1,22 @@
 package com.example.testopala
 
-import android.support.v4.content.ContextCompat
-import android.util.DisplayMetrics
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
+import android.graphics.drawable.LayerDrawable
+import android.graphics.drawable.StateListDrawable
+import android.support.v4.content.ContextCompat
+import android.support.v4.view.ViewCompat
 import kotlinx.android.synthetic.main.pad_entry.view.*
 
 class PadAdapter(val padList: List<PadEntity>, val heightGridView: Int) : BaseAdapter() {
 
+    private var mContext: Context? = null
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
 
@@ -23,8 +29,25 @@ class PadAdapter(val padList: List<PadEntity>, val heightGridView: Int) : BaseAd
         val ivPad = view.findViewById<ImageView>(R.id.id_pad)
         ivPad.layoutParams.height = heightGridView / 4
 
+        view.setOnClickListener {
+            view.elevation = 10F
+            startAnimationSelector(ivPad, pad, view)
+        }
 
         return view
+    }
+
+    private fun startAnimationSelector(ivPad: ImageView, pad: PadEntity,  view: View) {
+        Thread(Runnable {
+            if (!ivPad.isSelected) {
+                ivPad.isSelected = true
+                Thread.sleep(500)
+                view.elevation = 0F
+            }
+
+            ivPad.isSelected = false
+
+        }).start()
     }
 
     override fun getItem(position: Int): Any {
