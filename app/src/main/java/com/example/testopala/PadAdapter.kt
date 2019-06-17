@@ -22,8 +22,8 @@ class PadAdapter(val padList: List<PadEntity>, val heightGridView: Int) : BaseAd
 
         val pad = this.padList[position]
 
-        val context = parent?.context
-        val inflater = LayoutInflater.from(context)
+        mContext = parent?.context
+        val inflater = LayoutInflater.from(mContext)
         val view = inflater.inflate(R.layout.pad_entry, parent, false)
 
         val ivPad = view.findViewById<ImageView>(R.id.id_pad)
@@ -33,6 +33,8 @@ class PadAdapter(val padList: List<PadEntity>, val heightGridView: Int) : BaseAd
             view.elevation = 10F
             startAnimationSelector(ivPad, pad, view)
         }
+
+        customSelectorImageView(ivPad, pad)
 
         return view
     }
@@ -48,6 +50,28 @@ class PadAdapter(val padList: List<PadEntity>, val heightGridView: Int) : BaseAd
             ivPad.isSelected = false
 
         }).start()
+    }
+
+    private fun customSelectorImageView(ivPad: ImageView, pad: PadEntity) {
+        val layerDrawable =  ContextCompat.getDrawable(mContext!!, R.drawable.bg_pad_selected) as (LayerDrawable)
+        val selectedCustom = layerDrawable.findDrawableByLayerId(R.id.layerItem)
+        (selectedCustom as GradientDrawable).setColor(getColorWithAlpha(ContextCompat.getColor(mContext!!, pad.color), 0.5F))
+
+
+        val layerDrawable2 =  ContextCompat.getDrawable(mContext!!, R.drawable.bg_pad_selected) as (LayerDrawable)
+        val selectedCustom2 = layerDrawable2.findDrawableByLayerId(R.id.layerItem2)
+        (selectedCustom2 as GradientDrawable).setColor(getColorWithAlpha(ContextCompat.getColor(mContext!!, pad.color), 0.2F))
+
+        val stateListDrawable = StateListDrawable()
+        stateListDrawable.addState(intArrayOf(android.R.attr.state_selected), layerDrawable)
+        stateListDrawable.addState(intArrayOf(-android.R.attr.state_selected),
+            ContextCompat.getDrawable(mContext!!, R.drawable.bg_pad))
+
+        ViewCompat.setBackground(ivPad, stateListDrawable)
+    }
+
+    private fun getColorWithAlpha(color: Int, ratio: Float): Int {
+        return Color.argb(Math.round(Color.alpha(color) * ratio), Color.red(color), Color.green(color), Color.blue(color))
     }
 
     override fun getItem(position: Int): Any {
