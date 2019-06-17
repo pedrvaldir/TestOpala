@@ -6,11 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import android.widget.ImageView
 import kotlinx.android.synthetic.main.pad_entry.view.*
 
-class PadAdapter(val padList: List<PadEntity>) : BaseAdapter() {
+class PadAdapter(val padList: List<PadEntity>, val heightGridView: Int) : BaseAdapter() {
 
-    private var mColorResourceId: Int = 0
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
 
@@ -20,11 +20,9 @@ class PadAdapter(val padList: List<PadEntity>) : BaseAdapter() {
         val inflater = LayoutInflater.from(context)
         val view = inflater.inflate(R.layout.pad_entry, parent, false)
 
-        val textContainer: View = view.findViewById(R.id.id_pad)
+        val ivPad = view.findViewById<ImageView>(R.id.id_pad)
+        ivPad.layoutParams.height = heightGridView / 4
 
-        var color = ContextCompat.getColor(context!!, pad.color)
-
-        textContainer.setBackgroundColor(color)
 
         return view
     }

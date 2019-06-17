@@ -2,17 +2,11 @@
 <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-    <LinearLayout
+        android:layout_height="match_parent">
+    <ImageView
             android:id="@+id/id_pad"
             android:layout_width="match_parent"
-            android:layout_height="120dp">
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="@color/colorAccent"
-                android:text="A"
-        />
-    </LinearLayout>
+            android:layout_height="match_parent"
+            android:focusableInTouchMode="true"
+            android:background="@drawable/sl_pad"/>
 </RelativeLayout>
