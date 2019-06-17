@@ -1,3 +1,14 @@
 package com.example.testopala
 
-data class PadEntity(val color: Int, val pad: Int, val state: Int, val time: Double)
+import com.google.gson.annotations.SerializedName
+
+data class PadEntity(
+    @SerializedName("color")
+    val color: String,
+    @SerializedName("pad")
+    val pad: Int,
+    @SerializedName("state")
+    val state: Int,
+    @SerializedName("time")
+    val time: Double
+)

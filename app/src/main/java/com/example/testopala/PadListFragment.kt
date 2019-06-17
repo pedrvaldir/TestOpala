@@ -32,7 +32,7 @@ class PadListFragment : Fragment() {
         //insertData Gridview mock
         var adapter: PadAdapter? = null
 
-        val data = listOf(
+        /*  val data = listOf(
             PadEntity(R.color.pad_pink, 100, 1, 6.183232125011273),
             PadEntity(R.color.pad_blue, 100, 1, 6.183232125011273),
             PadEntity(R.color.pad_blue, 100, 1, 6.183232125011273),
@@ -47,7 +47,7 @@ class PadListFragment : Fragment() {
             PadEntity(R.color.pad_pink, 100, 1, 6.183232125011273)
         )
 
-        adapter = PadAdapter(data, getHeightScreen())
+        adapter = PadAdapter(data, getHeightScreen())*/
 
         mGridViewList.adapter = adapter
 
