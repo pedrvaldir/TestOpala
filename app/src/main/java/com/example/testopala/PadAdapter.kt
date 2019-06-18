@@ -12,11 +12,16 @@ import android.graphics.drawable.LayerDrawable
 import android.graphics.drawable.StateListDrawable
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewCompat
-import kotlinx.android.synthetic.main.pad_entry.view.*
 
-class PadAdapter(val padList: List<PadEntity>, val heightGridView: Int) : BaseAdapter() {
+class PadAdapter(
+    val padList: List<PadEntity>,
+    val heightGridView: Int,
+    mListener: selectedPadItem
+) : BaseAdapter() {
 
     private var mContext: Context? = null
+    var arrayListView = arrayListOf<ImageView>()
+    var mlistPadAdapter = mListener
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
 
@@ -26,17 +31,33 @@ class PadAdapter(val padList: List<PadEntity>, val heightGridView: Int) : BaseAd
         val inflater = LayoutInflater.from(mContext)
         val view = inflater.inflate(R.layout.pad_entry, parent, false)
 
-        val ivPad = view.findViewById<ImageView>(R.id.id_pad)
-        ivPad.layoutParams.height = heightGridView / 4
+
+        val mViewPadItem = view.findViewById<ImageView>(R.id.id_pad)
+        mViewPadItem.layoutParams.height = heightGridView / 4
+        mViewPadItem.tag = pad.pad //position
+
+        arrayListView.add(mViewPadItem)
 
         view.setOnClickListener {
             view.elevation = 10F
-            startAnimationSelector(ivPad, pad, view)
+            startAnimationSelector(mViewPadItem, pad, view)
         }
 
-        customSelectorImageView(ivPad, pad)
 
+
+        customSelectorImageView(mViewPadItem, pad)
+
+        if (position==this.padList.size-1){
+            mlistPadAdapter.onPadClick()
+
+        }
         return view
+    }
+
+    interface selectedPadItem{
+        fun onPadClick(){
+
+        }
     }
 
     private fun startAnimationSelector(ivPad: ImageView, pad: PadEntity,  view: View) {
@@ -60,6 +81,7 @@ class PadAdapter(val padList: List<PadEntity>, val heightGridView: Int) : BaseAd
             "pink" -> colorPadSelector = R.color.pad_pink
             "blue" -> colorPadSelector = R.color.pad_blue
             "green" -> colorPadSelector = R.color.pad_green
+            "orange" -> colorPadSelector = R.color.pad_green
         }
 
       val layerDrawable =  ContextCompat.getDrawable(mContext!!, R.drawable.bg_pad_selected) as (LayerDrawable)
@@ -93,5 +115,13 @@ class PadAdapter(val padList: List<PadEntity>, val heightGridView: Int) : BaseAd
 
     override fun getCount(): Int {
         return padList.size
+    }
+
+    fun seekPad(pad: Int) {
+        for (img in arrayListView){
+            if (img.tag==pad){
+                img.isSelected = true
+            }
+        }
     }
 }

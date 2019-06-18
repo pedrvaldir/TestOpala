@@ -12,34 +12,35 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.GridView
 
-class PadListFragment : Fragment() {
+class PadListFragment : Fragment(){
 
     private lateinit var mGridViewList: GridView
     private var mPadsFilter: Array<String>? = null
-    private var adapter: PadAdapter? = null
+    private var mAdapter: PadAdapter? = null
+    lateinit var mListener: PadAdapter.selectedPadItem
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (arguments != null) {
-            mPadsFilter = arguments!!.getStringArray("Side")
+            mPadsFilter = arguments!!.getStringArray(Constants.PADFILTER.KEY)
         }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val rootView = inflater.inflate(R.layout.fragment_pad_list, container, false)
 
+        val mContext = context
+
         //localiza o layout
         mGridViewList = rootView.findViewById(R.id.gridViewList)
 
-        //insertData Gridview mock
-
-
         loadColorPads()
 
-        mGridViewList.adapter = adapter
+        mGridViewList.adapter = mAdapter
 
         return rootView
     }
+
 
     private fun loadColorPads() {
 
@@ -49,8 +50,10 @@ class PadListFragment : Fragment() {
 
         for (item in 0..11) {
             data.add(PadEntity(listdfas!![item], item, 1, 0.0))
+
         }
-        adapter = PadAdapter(data!!, getHeightScreen())
+
+        mAdapter = PadAdapter(data!!, getHeightScreen(), mListener)
     }
 
     private fun getHeightScreen(): Int {
@@ -90,11 +93,15 @@ class PadListFragment : Fragment() {
         return result
     }
 
+    fun itemSelected(pad: Int) {
+        mAdapter?.seekPad(pad)
+    }
+
     companion object {
         @JvmStatic
         fun newInstance(colorsList: Array<String?>): PadListFragment {
             val args: Bundle = Bundle()
-            args.putStringArray("Side", colorsList)
+            args.putStringArray(Constants.PADFILTER.KEY, colorsList)
 
             val fragment = PadListFragment()
             fragment.arguments = args
