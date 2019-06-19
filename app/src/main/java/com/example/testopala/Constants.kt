@@ -11,4 +11,11 @@ class Constants {
         val SIDEA = "SIDEA"
         val SIDEB = "SIDEB"
     }
+
+    object COLORSJSON{
+        val PINK = "pink"
+        val BLUE = "blue"
+        val GREEN = "green"
+        val ORANGE = "orange"
+    }
 }

@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimary">#526572</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorDefaultBackground">#e8e8e8</color>
     <color name="colorAccent">#D81B60</color>
 
-    <color name="pad_pink">#FF008C</color>
-    <color name="pad_green">#8BC34A</color>
-    <color name="pad_blue">#00BCD4</color>
+    <color name="pad_pink">#FF0065</color>
+    <color name="pad_green">#00EB00</color>
+    <color name="pad_blue">#00EB00</color>
     <color name="pad_orange">#FF5722</color>
+    <color name="pad_white">#FFFFFF</color>
 
     <color name="background_base_side">#526471</color>
 

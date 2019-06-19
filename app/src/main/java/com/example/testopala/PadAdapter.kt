@@ -31,78 +31,76 @@ class PadAdapter(
         val inflater = LayoutInflater.from(mContext)
         val view = inflater.inflate(R.layout.pad_entry, parent, false)
 
-
         val mViewPadItem = view.findViewById<ImageView>(R.id.id_pad)
         mViewPadItem.layoutParams.height = heightGridView / 4
         mViewPadItem.tag = pad.pad //position
 
         arrayListView.add(mViewPadItem)
 
-        view.setOnClickListener {
-            view.elevation = 10F
-            startAnimationSelector(mViewPadItem, pad, view)
-        }
-
-
-
         customSelectorImageView(mViewPadItem, pad)
 
-        if (position==this.padList.size-1){
+        if (position == this.padList.size - 1) {
             mlistPadAdapter.onPadClick()
 
         }
         return view
     }
 
-    interface selectedPadItem{
-        fun onPadClick(){
-
-        }
-    }
-
-    private fun startAnimationSelector(ivPad: ImageView, pad: PadEntity,  view: View) {
-        Thread(Runnable {
-            if (!ivPad.isSelected) {
-                ivPad.isSelected = true
-                Thread.sleep(500)
-                view.elevation = 0F
-            }
-
-            ivPad.isSelected = false
-
-        }).start()
+    interface selectedPadItem {
+        fun onPadClick()
     }
 
     private fun customSelectorImageView(ivPad: ImageView, pad: PadEntity) {
 
-       var colorPadSelector: Int = R.color.pad_green
+        var colorPadSelector: Int = R.color.pad_green
 
-        when(pad.color){
-            "pink" -> colorPadSelector = R.color.pad_pink
-            "blue" -> colorPadSelector = R.color.pad_blue
-            "green" -> colorPadSelector = R.color.pad_green
-            "orange" -> colorPadSelector = R.color.pad_green
+        when (pad.color) {
+            Constants.COLORSJSON.PINK -> colorPadSelector = R.color.pad_pink
+            Constants.COLORSJSON.BLUE -> colorPadSelector = R.color.pad_blue
+            Constants.COLORSJSON.GREEN -> colorPadSelector = R.color.pad_green
+            Constants.COLORSJSON.ORANGE -> colorPadSelector = R.color.pad_orange
         }
 
-      val layerDrawable =  ContextCompat.getDrawable(mContext!!, R.drawable.bg_pad_selected) as (LayerDrawable)
+
+        val layerDrawable = ContextCompat.getDrawable(mContext!!, R.drawable.bg_pad_selected) as (LayerDrawable)
         val selectedCustom = layerDrawable.findDrawableByLayerId(R.id.layerItem)
-        (selectedCustom as GradientDrawable).setColor(getColorWithAlpha(ContextCompat.getColor(mContext!!, colorPadSelector), 0.5F))
+        (selectedCustom as GradientDrawable).setColor(
+            getColorWithAlpha(
+                ContextCompat.getColor(
+                    mContext!!,
+                    colorPadSelector
+                ), 0.5F
+            )
+        )
 
-
-        val layerDrawable2 =  ContextCompat.getDrawable(mContext!!, R.drawable.bg_pad_selected) as (LayerDrawable)
+        val layerDrawable2 = ContextCompat.getDrawable(mContext!!, R.drawable.bg_pad_selected) as (LayerDrawable)
         val selectedCustom2 = layerDrawable2.findDrawableByLayerId(R.id.layerItem2)
-        (selectedCustom2 as GradientDrawable).setColor(getColorWithAlpha(ContextCompat.getColor(mContext!!, colorPadSelector), 0.2F))
+        (selectedCustom2 as GradientDrawable).setColor(
+            getColorWithAlpha(
+                ContextCompat.getColor(
+                    mContext!!,
+                    colorPadSelector
+                ), 0.2F
+            )
+        )
 
         val stateListDrawable = StateListDrawable()
         stateListDrawable.addState(intArrayOf(android.R.attr.state_selected), layerDrawable)
-        stateListDrawable.addState(intArrayOf(-android.R.attr.state_selected),
-            ContextCompat.getDrawable(mContext!!, R.drawable.bg_pad))
+        stateListDrawable.addState(
+            intArrayOf(-android.R.attr.state_selected),
+            ContextCompat.getDrawable(mContext!!, R.drawable.bg_pad)
+        )
 
         ViewCompat.setBackground(ivPad, stateListDrawable)
     }
 
     private fun getColorWithAlpha(color: Int, ratio: Float): Int {
-        return Color.argb(Math.round(Color.alpha(color) * ratio), Color.red(color), Color.green(color), Color.blue(color))
+        return Color.argb(
+            Math.round(Color.alpha(color) * ratio),
+            Color.red(color),
+            Color.green(color),
+            Color.blue(color)
+        )
     }
 
     override fun getItem(position: Int): Any {
@@ -118,9 +116,14 @@ class PadAdapter(
     }
 
     fun seekPad(pad: Int) {
-        for (img in arrayListView){
-            if (img.tag==pad){
-                img.isSelected = true
+        for (img in arrayListView) {
+            if (img.tag == pad) {
+                if (!img.isSelected) {
+                    img.isSelected = true
+                    Thread.sleep(500)
+                    img.elevation = 0F
+                }
+                img.isSelected = false
             }
         }
     }

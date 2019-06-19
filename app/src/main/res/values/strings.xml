@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Test Opala</string>
+    <string name="side_a">SIDE A</string>
+    <string name="side_b">SIDE B</string>
 </resources>

@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class PadEntity(
     @SerializedName("color")
-    val color: String,
+    val color: String?,
     @SerializedName("pad")
     val pad: Int,
     @SerializedName("state")

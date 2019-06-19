@@ -8,6 +8,5 @@ import retrofit2.http.Url
 interface PadService {
 
     @GET()
-    fun list(@Url url: String) : Call<List<PadEntity>>
-
+    fun list(@Url url: String): Call<List<PadEntity>>
 }

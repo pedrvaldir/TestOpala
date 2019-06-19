@@ -8,19 +8,19 @@ import com.example.testopala.retrofit.RetrofitInitializer
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import kotlin.concurrent.fixedRateTimer
 
 class MainActivity : AppCompatActivity(), PadAdapter.selectedPadItem {
 
-
     private lateinit var mfragment: PadListFragment
     private lateinit var listPads: List<PadEntity>
-    private lateinit var colorsList: Array<String?>
-    private lateinit var listTime:  ArrayList<Double>
+    private lateinit var listTime: ArrayList<Double>
+    private var initTime: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        title = getString(R.string.side_a)
 
         handleDataListPad()
 
@@ -60,13 +60,11 @@ class MainActivity : AppCompatActivity(), PadAdapter.selectedPadItem {
         for (listPads in padList) {
 
             if (listPads.pad != 100 && listPads.pad != 101) {
-
-                colorsList[listPads.pad-1] = listPads.color
-
+                colorsList[listPads.pad - 1] = listPads.color
             }
         }
 
-        mfragment = PadListFragment.newInstance(colorsList)
+        mfragment = PadListFragment.newInstance(Constants.PADFILTER.SIDEA)
         mfragment.mListener = this
 
         supportFragmentManager.beginTransaction().replace(R.id.frameContent, mfragment).commit()
@@ -75,51 +73,42 @@ class MainActivity : AppCompatActivity(), PadAdapter.selectedPadItem {
 
     override fun onPadClick() {
 
-        var time = 0L
+        if (!initTime) {
 
-        Thread(Runnable {
+            initTime = true
 
-            var sizeList=0
-            do {
+            var time = 0L
+            var sizeList = 0
 
-                for (listPads in listPads) {
-                    if (time>=listPads.time && time<=listPads.time+1){
+            Thread(Runnable {
 
-                        if(listPads.pad!=100 && listPads.pad!=101){
-                            mfragment.itemSelected(listPads.pad-1)
-                            sizeList++
-                            Log.i("threaddispada", "pad"+listPads.time)
-                            listPads.pad
-                        }else if(listPads.pad==100){
-                            sizeList++
-                            Log.i("threadthread", "inflar layout 2"+listPads.pad)
-                            listPads.pad
-                        }else if(listPads.pad==101){
-                            sizeList++
-                            Log.i("threadthread", "inflar layout 2"+listPads.pad)
-                            listPads.pad
+                do {
+
+                    for (listPads in listPads) {
+                        if (time >= listPads.time && time <= listPads.time + 1) {
+
+                            if (listPads.pad != 100 && listPads.pad != 101) {
+                                mfragment.itemSelected(listPads.pad - 1)
+                                sizeList++
+                            } else if (listPads.pad == 101) {
+
+                                runOnUiThread {
+                                    title = getString(R.string.side_b)
+                                }
+
+                                mfragment = PadListFragment.newInstance(Constants.PADFILTER.SIDEB)
+                                mfragment.mListener = this
+                                supportFragmentManager.beginTransaction().replace(R.id.frameContent, mfragment).commit()
+                            }
                         }
                     }
-                }
 
-                Thread.sleep(1000)
-                time+=1L
-                Log.i("size", "sizeList"+sizeList+"listpadsize"+listPads.size)
+                    Thread.sleep(1000)
+                    time += 1L
 
-            }while(sizeList<listPads.size)
-
-
-
-        }).start()
-
-    }
-
-
-    private fun startDefaultFragment() {
-
-        val fragment: Fragment = PadListFragment.newInstance(colorsList)
-
-        supportFragmentManager.beginTransaction().replace(R.id.frameContent, fragment).commit()
+                } while (sizeList <= listPads.size - 1)
+            }).start()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: android.view.Menu?): kotlin.Boolean {
@@ -130,10 +119,10 @@ class MainActivity : AppCompatActivity(), PadAdapter.selectedPadItem {
         return super.onCreateOptionsMenu(menu)
     }
 
-    override fun onOptionsItemSelected(item: android.view.MenuItem): kotlin.Boolean {
+    override fun onOptionsItemSelected(item: android.view.MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_page -> {
-                val fragment: Fragment = PadListFragment.newInstance(colorsList)
+                val fragment: Fragment = PadListFragment.newInstance(Constants.PADFILTER.SIDEA)
 
                 supportFragmentManager.beginTransaction().replace(R.id.frameContent, fragment).commit()
                 return true
@@ -143,4 +132,9 @@ class MainActivity : AppCompatActivity(), PadAdapter.selectedPadItem {
         }
         return super.onOptionsItemSelected(item)
 
-}}
+    }
+
+    companion object colorsListPads {
+        lateinit var colorsList: Array<String?>
+    }
+}

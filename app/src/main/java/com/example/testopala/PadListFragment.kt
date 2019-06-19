@@ -12,26 +12,24 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.GridView
 
-class PadListFragment : Fragment(){
+class PadListFragment : Fragment() {
 
     private lateinit var mGridViewList: GridView
-    private var mPadsFilter: Array<String>? = null
     private var mAdapter: PadAdapter? = null
     lateinit var mListener: PadAdapter.selectedPadItem
+    lateinit private var mSide: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         if (arguments != null) {
-            mPadsFilter = arguments!!.getStringArray(Constants.PADFILTER.KEY)
+            mSide = arguments!!.getString(Constants.PADFILTER.KEY)
         }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val rootView = inflater.inflate(R.layout.fragment_pad_list, container, false)
 
-        val mContext = context
-
-        //localiza o layout
         mGridViewList = rootView.findViewById(R.id.gridViewList)
 
         loadColorPads()
@@ -44,13 +42,16 @@ class PadListFragment : Fragment(){
 
     private fun loadColorPads() {
 
-        val listdfas = mPadsFilter
+        val listdfas = MainActivity.colorsList
 
         val data = arrayListOf<PadEntity>()
 
-        for (item in 0..11) {
-            data.add(PadEntity(listdfas!![item], item, 1, 0.0))
-
+        if (mSide == Constants.PADFILTER.SIDEA) {
+            for (item in 0..11)
+                data.add(PadEntity(listdfas!![item], item, 1, 0.0))
+        } else {
+            for (item in 12..23)
+                data.add(PadEntity(listdfas!![item], item, 1, 0.0))
         }
 
         mAdapter = PadAdapter(data!!, getHeightScreen(), mListener)
@@ -99,9 +100,9 @@ class PadListFragment : Fragment(){
 
     companion object {
         @JvmStatic
-        fun newInstance(colorsList: Array<String?>): PadListFragment {
+        fun newInstance(side: String): PadListFragment {
             val args: Bundle = Bundle()
-            args.putStringArray(Constants.PADFILTER.KEY, colorsList)
+            args.putString(Constants.PADFILTER.KEY, side)
 
             val fragment = PadListFragment()
             fragment.arguments = args
