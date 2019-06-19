@@ -52,7 +52,7 @@ class PadAdapter(
 
     private fun customSelectorImageView(ivPad: ImageView, pad: PadEntity) {
 
-        var colorPadSelector: Int = R.color.pad_green
+        var colorPadSelector = 0
 
         when (pad.color) {
             Constants.COLORSJSON.PINK -> colorPadSelector = R.color.pad_pink
@@ -62,57 +62,17 @@ class PadAdapter(
         }
 
 
-        val layerDrawable = ContextCompat.getDrawable(mContext!!, R.drawable.bg_pad_selected) as (LayerDrawable)
+        val layerDrawable =  ContextCompat.getDrawable(mContext!!, R.drawable.bg_pad_selected) as (LayerDrawable)
         val selectedCustom = layerDrawable.findDrawableByLayerId(R.id.layerItem)
-        (selectedCustom as GradientDrawable).setColor(
-            getColorWithAlpha(
-                ContextCompat.getColor(
-                    mContext!!,
-                    colorPadSelector
-                ), 0.5F
-            )
-        )
 
-        val layerDrawable2 = ContextCompat.getDrawable(mContext!!, R.drawable.bg_pad_selected) as (LayerDrawable)
-        val selectedCustom2 = layerDrawable2.findDrawableByLayerId(R.id.layerItem2)
-        (selectedCustom2 as GradientDrawable).setColor(
-            getColorWithAlpha(
-                ContextCompat.getColor(
-                    mContext!!,
-                    colorPadSelector
-                ), 0.2F
-            )
-        )
+        (selectedCustom as GradientDrawable).setColor(ContextCompat.getColor(mContext!!, colorPadSelector))
 
         val stateListDrawable = StateListDrawable()
-        stateListDrawable.addState(intArrayOf(android.R.attr.state_selected), layerDrawable)
-        stateListDrawable.addState(
-            intArrayOf(-android.R.attr.state_selected),
-            ContextCompat.getDrawable(mContext!!, R.drawable.bg_pad)
-        )
+        stateListDrawable.addState(intArrayOf(android.R.attr.state_selected), selectedCustom)
+        stateListDrawable.addState(intArrayOf(-android.R.attr.state_selected),
+            ContextCompat.getDrawable(mContext!!, R.drawable.bg_pad))
 
         ViewCompat.setBackground(ivPad, stateListDrawable)
-    }
-
-    private fun getColorWithAlpha(color: Int, ratio: Float): Int {
-        return Color.argb(
-            Math.round(Color.alpha(color) * ratio),
-            Color.red(color),
-            Color.green(color),
-            Color.blue(color)
-        )
-    }
-
-    override fun getItem(position: Int): Any {
-        return padList[position]
-    }
-
-    override fun getItemId(position: Int): Long {
-        return position.toLong()
-    }
-
-    override fun getCount(): Int {
-        return padList.size
     }
 
     fun seekPad(pad: Int) {
@@ -126,5 +86,17 @@ class PadAdapter(
                 img.isSelected = false
             }
         }
+    }
+
+    override fun getItem(position: Int): Any {
+        return padList[position]
+    }
+
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
+    }
+
+    override fun getCount(): Int {
+        return padList.size
     }
 }

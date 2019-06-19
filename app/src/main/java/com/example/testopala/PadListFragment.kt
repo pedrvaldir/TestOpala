@@ -1,6 +1,7 @@
 package com.example.testopala
 
 import android.content.Context
+import android.content.res.Resources
 import android.graphics.Point
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -11,6 +12,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.GridView
+import android.view.Display
+
+
 
 class PadListFragment : Fragment() {
 
@@ -31,6 +35,8 @@ class PadListFragment : Fragment() {
         val rootView = inflater.inflate(R.layout.fragment_pad_list, container, false)
 
         mGridViewList = rootView.findViewById(R.id.gridViewList)
+        mGridViewList.horizontalSpacing = 20
+        mGridViewList.verticalSpacing = 20
 
         loadColorPads()
 
@@ -69,17 +75,20 @@ class PadListFragment : Fragment() {
 
         height -= getStatusBarSize()
         height -= getSizeStatusBar()
-        //height -= getPaddingTotal()
+        height -= getPaddingTotal()
 
         return height
     }
 
+    private fun getPaddingTotal(): Int {
+        return  (25 * Resources.getSystem().displayMetrics.density + 0.5f).toInt()
+    }
+
     private fun getStatusBarSize(): Int {
-        val tv = TypedValue()
+
         var actionBarHeight = 0
-        if (context?.theme?.resolveAttribute(android.R.attr.actionBarSize, tv, true) == true) {
-            actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data, resources.displayMetrics)
-        }
+
+        actionBarHeight = 110 * context!!.resources.displayMetrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT;
 
         return actionBarHeight
     }
