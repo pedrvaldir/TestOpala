@@ -3,8 +3,11 @@ package com.example.testopala
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.app.ActionBar
 import android.util.Log
+import android.widget.Toast
 import com.example.testopala.retrofit.RetrofitInitializer
+import kotlinx.android.synthetic.main.action_bar.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -12,15 +15,15 @@ import retrofit2.Response
 class MainActivity : AppCompatActivity(), PadAdapter.selectedPadItem {
 
     private lateinit var mfragment: PadListFragment
-    private lateinit var listPads: List<PadEntity>
-    private lateinit var listTime: ArrayList<Double>
+    private lateinit var mListPads: List<PadEntity>
     private var initTime: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        title = getString(R.string.side_a)
+        supportActionBar?.displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM;
+        supportActionBar?.setCustomView(R.layout.action_bar)
 
         handleDataListPad()
 
@@ -53,8 +56,7 @@ class MainActivity : AppCompatActivity(), PadAdapter.selectedPadItem {
 
     private fun setColorsGrid(padList: List<PadEntity>) {
 
-        listPads = padList
-        listTime = ArrayList()
+        mListPads = padList
         colorsList = Array(24) { null }
 
         for (listPads in padList) {
@@ -84,7 +86,7 @@ class MainActivity : AppCompatActivity(), PadAdapter.selectedPadItem {
 
                 do {
 
-                    for (listPads in listPads) {
+                    for (listPads in mListPads) {
                         if (time >= listPads.time && time <= listPads.time + 1) {
 
                             if (listPads.pad != 100 && listPads.pad != 101) {
@@ -93,7 +95,7 @@ class MainActivity : AppCompatActivity(), PadAdapter.selectedPadItem {
                             } else if (listPads.pad == 101) {
 
                                 runOnUiThread {
-                                    title = getString(R.string.side_b)
+                                    action_bar_title.text = getText(R.string.side_b)
                                 }
 
                                 mfragment = PadListFragment.newInstance(Constants.PADFILTER.SIDEB)
@@ -106,32 +108,14 @@ class MainActivity : AppCompatActivity(), PadAdapter.selectedPadItem {
                     Thread.sleep(1000)
                     time += 1L
 
-                } while (sizeList <= listPads.size - 1)
+
+
+                } while (sizeList <= mListPads.size - 1)
+
+
+
             }).start()
         }
-    }
-
-    override fun onCreateOptionsMenu(menu: android.view.Menu?): kotlin.Boolean {
-        val inflater = menuInflater
-
-        inflater.inflate(R.menu.menu_toolbar, menu)
-
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    override fun onOptionsItemSelected(item: android.view.MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.menu_page -> {
-                val fragment: Fragment = PadListFragment.newInstance(Constants.PADFILTER.SIDEA)
-
-                supportFragmentManager.beginTransaction().replace(R.id.frameContent, fragment).commit()
-                return true
-            }
-
-
-        }
-        return super.onOptionsItemSelected(item)
-
     }
 
     companion object colorsListPads {

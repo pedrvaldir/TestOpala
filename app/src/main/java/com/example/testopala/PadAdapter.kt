@@ -20,7 +20,7 @@ class PadAdapter(
 ) : BaseAdapter() {
 
     private var mContext: Context? = null
-    var arrayListView = arrayListOf<ImageView>()
+    var mArrayListView = arrayListOf<ImageView>()
     var mlistPadAdapter = mListener
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
@@ -35,7 +35,7 @@ class PadAdapter(
         mViewPadItem.layoutParams.height = heightGridView / 4
         mViewPadItem.tag = pad.pad //position
 
-        arrayListView.add(mViewPadItem)
+        mArrayListView.add(mViewPadItem)
 
         customSelectorImageView(mViewPadItem, pad)
 
@@ -116,7 +116,7 @@ class PadAdapter(
     }
 
     fun seekPad(pad: Int) {
-        for (img in arrayListView) {
+        for (img in mArrayListView) {
             if (img.tag == pad) {
                 if (!img.isSelected) {
                     img.isSelected = true
